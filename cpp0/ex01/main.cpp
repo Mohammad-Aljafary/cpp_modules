@@ -23,38 +23,87 @@ void PhoneBook::searchContact() {
               << std::setw(10) << "First Name" << "|"
               << std::setw(10) << "Last Name" << "|"
               << std::setw(10) << "Nickname" << std::endl;
+    std:: cout << std::setw(10)   << "----" 
+                << std:: setw(10) << " ----" 
+                << std:: setw(10) << "----" 
+                << std:: setw(10) << "----" << std:: endl;
 
     for (int i = 0; i < numOfContact; i++) {
         std::cout << std::setw(10) << i + 1 << "|"
                   << std::setw(10) << truncate(contacts[i].firstName) << "|"
                   << std::setw(10) << truncate(contacts[i].lastName) << "|"
                   << std::setw(10) << truncate(contacts[i].nickname) << std::endl;
+        std:: cout << std::setw(10)   << "----" 
+        << std:: setw(10) << " ----" 
+        << std:: setw(10) << "----" 
+        << std:: setw(10) << "----" << std:: endl;
     }
 }
 
-#define MAX_CONTACTS 8
+int printtErr (std:: string str)
+{
+    int i;
+
+    for (i = 0; str[i]; i++)
+    {
+        std:: cerr << "There is an Invalid Input" << std:: endl;
+        return (0);
+    }
+    return (1);
+}
+
+int PhoneBook:: validInput(Contact contact)
+{
+    int i;
+
+    if (!printtErr(contact.firstName))
+        return (0);
+    if (!printtErr(contact.lastName))
+        return (0);
+    if (!printtErr(contact.nickname))
+        return (0);
+    if (!printtErr(contact.darkestSecret))
+        return (0);
+    for (i = 0; contact.phoneNumber[i]; i++)
+    {
+        if (!isdigit(contact.phoneNumber[i]))
+        {
+            std:: cerr << "There is an Invalid Input" << std:: endl;
+            return (0);
+        }
+    }
+    return (1);
+}
+
 
 void PhoneBook::addContact() {
     static int index = 0;
 
     std::cout << "Enter First name: ";
-    if (!std::getline(std::cin, contacts[index].firstName))
+    std::getline(std::cin, contacts[index].firstName);
+    if (contacts[index].firstName.empty())
         return ;
 
     std::cout << "Enter Last name: ";
-    if (!std::getline(std::cin, contacts[index].lastName))
+    std::getline(std::cin, contacts[index].lastName);
+    if (contacts[index].lastName.empty())
         return ;
 
     std::cout << "Enter Nickname: ";
-    if (!std::getline(std::cin, contacts[index].nickname))
+    std::getline(std::cin, contacts[index].nickname);
+    if (contacts[index].nickname.empty())
         return ;
 
     std::cout << "Enter Phone Number: ";
-    if (!std::getline(std::cin, contacts[index].phoneNumber))
+    std::getline(std::cin, contacts[index].phoneNumber);
+    if (contacts[index].phoneNumber.empty())
         return ;
 
     std::cout << "Enter Darkest Secret: ";
-    if (!std::getline(std::cin, contacts[index].darkestSecret))
+    std::getline(std::cin, contacts[index].darkestSecret);
+    if (contacts[index].darkestSecret.empty())
+        return ;
+    if (!validInput(contacts[index]))
         return ;
     if (numOfContact < 8)
         numOfContact++;
