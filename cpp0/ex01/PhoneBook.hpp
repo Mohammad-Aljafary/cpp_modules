@@ -17,7 +17,8 @@ class PhoneBook {
         void searchContact();
         void exitPhoneBook(int flag);
         std::string truncate(const std::string& str);
-        int validInput(Contact contact);
+        int validInput(std:: string str, int flag);
+        std:: string readInput(std:: string str, int alpha);
 };
 
 #endif
