@@ -21,8 +21,8 @@ std:: string PhoneBook::readInput(std::string str, int alpha)
 {
     std::string input; 
     std:: cout << "Enter " << str << ": ";
-    std::getline(std:: cin, input);
-
+    if (!std::getline(std:: cin, input))
+        exitPhoneBook(1);
     if (input.empty())
     {
         std::cerr << "Can't have empty field" << std:: endl;
