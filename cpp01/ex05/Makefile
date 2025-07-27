@@ -1,10 +1,10 @@
 CC = c++
 CFLAGS = -Wall -Werror -Wextra -std=c++98
 
-SRC = main.cpp linkedListOp.cpp
+SRC = main.cpp Harl.cpp
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
-NAME = Sed
+NAME = battle
 
 all: $(NAME)
 
