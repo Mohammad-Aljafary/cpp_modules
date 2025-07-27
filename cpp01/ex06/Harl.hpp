@@ -12,3 +12,11 @@ class Harl{
     public:
     void complain ( std::string level );
 };
+
+enum Level 
+{
+    DEBUG, 
+    INFO, 
+    WARNING,
+    ERROR
+};

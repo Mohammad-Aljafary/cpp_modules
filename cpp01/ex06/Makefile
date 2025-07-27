@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98
 SRC = main.cpp Harl.cpp
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
-NAME = Harl
+NAME = harlFilter
 
 all: $(NAME)
 
