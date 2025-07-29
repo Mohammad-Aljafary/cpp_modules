@@ -52,26 +52,37 @@ line* readFile(std::fstream& file) {
     }
     return (list);
 }
+
 int main(int argc, char **argv)
 {
     line* list = NULL;
+
     if (!check_args(argc))
-        return (1);
+    {
+        std::cerr << "Invalid number of arguments" << std::endl;
+        return 1;
+    }
+
     std::fstream myFile(argv[1]);
-    if (!myFile.is_open()){
+    if (!myFile.is_open()) {
         std::cerr << "file could not be opened" << std::endl;
-        return (1);
+        return 1;
     }
     std::string str1(argv[2]);
     std::string str2(argv[3]);
+    std::string outputFile = std::string(argv[1]) + ".replace";
     list = readFile(myFile);
-    if (!list)
-        return (1);
     myFile.close();
-    std::ofstream output;
-    output.open(argv[1], std::ios::out);
+    if (!list)
+        return 1;
+    std::ofstream output(outputFile.c_str());
+    if (!output.is_open()) {
+        std::cerr << "could not create output file" << std::endl;
+        return 1;
+    }
     modifyLines(list, str1, str2);
     writeToFile(list, output);
     output.close();
     freeList(&list);
+    return 0;
 }

@@ -2,7 +2,8 @@
 
 line *newNode (std::string str){
     line *node = new line;
-
+    if (!node)
+        return NULL;
     node->line = str;
     node->next = NULL;
     return (node);

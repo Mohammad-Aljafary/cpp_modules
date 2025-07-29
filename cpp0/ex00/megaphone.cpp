@@ -8,8 +8,10 @@ int main(int argc, char **argv)
     {
         for(int i = 1; i <= argc - 1; i++)
         {
+            std::string str;
             for(int j = 0; argv[i][j]; j++)
-                std::cout << (char) toupper(argv[i][j]);
+                str += toupper(argv[i][j]);
+            std::cout << str;
         }
         std:: cout << std::endl;
 
