@@ -4,7 +4,7 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98
 SRC = main.cpp ClapTrap.cpp
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
-NAME = ClapTrap
+NAME = ScavTrap
 
 all: $(NAME)
 
