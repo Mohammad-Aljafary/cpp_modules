@@ -1,11 +1,10 @@
 #pragma once
 
 #include "ClapTrap.hpp"
-#include "ScavTrap.hpp"
 #include <iostream>
 #include <string>
 
-class FragTrap : public ClapTrap {
+class FragTrap : virtual public ClapTrap {
     private:
         unsigned int energyPoints;
         unsigned int attackDamage;

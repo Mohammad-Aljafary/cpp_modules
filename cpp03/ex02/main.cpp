@@ -1,21 +1,18 @@
-#include "ScavTrap.hpp"
+#include "FragTrap.hpp"
 
 int main() {
-    ScavTrap scavTrap1("Scavenger");
-    ScavTrap scavTrap2;
+    ClapTrap claptrap("ClapTrap");
+    claptrap.attack("target1");
+    claptrap.beRepaired(5);
+    claptrap.takeDamage(3);
 
-    scavTrap1.attack("target1");
-    scavTrap2.attack("target2");
+    ScavTrap scavtrap("ScavTrap");
+    scavtrap.attack("target2");
+    scavtrap.guardGate();
 
-    scavTrap1.guardGate();
-    scavTrap2.guardGate();
-
-    ScavTrap scavTrap3 = scavTrap1; // Using copy constructor
-    scavTrap3.attack("target3");
-
-    ScavTrap scavTrap4;
-    scavTrap4 = scavTrap2; // Using assignment operator
-    scavTrap4.attack("target4");
+    FragTrap fragtrap("FragTrap");
+    fragtrap.attack("target3");
+    fragtrap.highFivesGuys();
 
     return 0;
 }
