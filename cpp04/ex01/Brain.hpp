@@ -5,14 +5,16 @@
 #include "Cat.hpp"
 #include "Dog.hpp"
 
-class Brain 
-{
+class Brain {
     private:
     std::string ideas[100];
 
     public:
     Brain();
-    void operator=(Brain& obj);
-    virtual ~Brain();
+    Brain(const Brain &other);
+    ~Brain();
+    Brain &operator=(const Brain &other);
 
+    void setIdea(int index, const std::string &idea);
+    std::string getIdea(int index) const;
 };

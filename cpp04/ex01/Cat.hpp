@@ -3,6 +3,9 @@
 #include "Animal.hpp"
 #include "Brain.hpp"
 
+
+class Brain;
+
 class Cat : public Animal {
     private:
         std::string name;
@@ -18,4 +21,6 @@ class Cat : public Animal {
 
         void makeSound() const;
         const std::string& getType() const;
+        void setBrainIdea(int index, const std::string& idea);
+        std::string getBrainIdea(int index) const;
 };
