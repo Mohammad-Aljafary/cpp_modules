@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <string.h>
+#include "Cat.hpp"
+#include "Dog.hpp"
 
 class Brain 
 {
