@@ -31,6 +31,18 @@ void PhoneBook::searchContact() {
         << std:: setw(10) << "----" 
         << std:: setw(10) << "----" << std:: endl;
     }
+    std:: string input = searchIndex();
+    if (input.empty()) return ;
+    int index = std::atoi(input.c_str()) - 1;
+    if (index < 0 || index >= numOfContact) {
+        std::cerr << "Index out of range" << std::endl;
+        return;
+    }
+    std::cout << "First Name: " << contacts[index].firstName << std::endl;
+    std::cout << "Last Name: " << contacts[index].lastName << std::endl;
+    std::cout << "Nickname: " << contacts[index].nickName << std::endl;
+    std::cout << "Phone Number: " << contacts[index].phoneNumber << std::endl;
+    std::cout << "Darkest Secret: " << contacts[index].darkestSecret << std::endl;
 }
 
 void PhoneBook::addContact() {

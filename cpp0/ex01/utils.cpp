@@ -17,6 +17,25 @@ int PhoneBook::validInput(std::string str, int flag)
     return 1;
 }
 
+std::string PhoneBook::searchIndex()
+{
+    std::string input;
+    std:: cout << "Enter index to view details: ";
+    if (!std::getline(std:: cin, input))
+        exitPhoneBook(1);
+    if (input.empty())
+    {
+        std::cerr << "Can't have empty field" << std:: endl;
+        return "";
+    }
+    if (!validInput(input, 0))
+    {
+        std::cerr << "Invalid number in field" << std::endl;
+        return "";
+    }
+    return input;
+}
+
 std:: string PhoneBook::readInput(std::string str, int alpha)
 {
     std::string input; 

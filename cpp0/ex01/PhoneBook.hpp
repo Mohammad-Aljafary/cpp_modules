@@ -19,6 +19,7 @@ class PhoneBook {
         std::string truncate(const std::string& str);
         int validInput(std:: string str, int flag);
         std:: string readInput(std:: string str, int alpha);
+        std::string searchIndex();
 };
 
 #endif
