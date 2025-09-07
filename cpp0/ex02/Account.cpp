@@ -52,6 +52,7 @@ void Account::makeDeposit(int deposit){
               << ";p_amount:" << _amount - deposit
               << ";deposit:" << deposit
               << ";amount:" << _amount
+			  << ";nb_deposits:" << _nbDeposits
               << std::endl;
 }
 
@@ -72,6 +73,7 @@ bool Account::makeWithdrawal(int withdraw){
               << ";p_amount:" << _amount + withdraw
               << ";withdrawal:" << withdraw
               << ";amount:" << _amount
+			  << ";nb_withdrawals:" << _nbWithdrawals
               << std::endl;
     return (true);
 }
@@ -115,8 +117,8 @@ void Account::_displayTimestamp(void){
         return;
     }
     std::tm* localTime = std::localtime(&now);
-    std::cout << "[" 
-              << (localTime->tm_year + 1900) 
+    std::cout << "["
+              << (localTime->tm_year + 1900)
               << std::setfill('0') << std::setw(2) << (localTime->tm_mon + 1)
               << std::setfill('0') << std::setw(2) << localTime->tm_mday
               << "_"
