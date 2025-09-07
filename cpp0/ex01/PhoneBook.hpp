@@ -10,16 +10,17 @@
 #define MAX_CONTACTS 8
 
 class PhoneBook {
+	private:
+	Contact contacts[MAX_CONTACTS];
+	int numOfContact;
+
     public:
-        Contact contacts[8];
-        int numOfContact;
-        void addContact();
+        std::string addContact();
         void searchContact();
-        void exitPhoneBook(int flag);
         std::string truncate(const std::string& str);
-        int validInput(std:: string str, int flag);
         std:: string readInput(std:: string str, int alpha);
         std::string searchIndex();
+		void setNumOfContact(int n);
 };
 
 #endif
