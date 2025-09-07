@@ -20,10 +20,6 @@ void PhoneBook::searchContact() {
                   << std::setw(10) << truncate(contacts[i].getFirstName()) << "|"
                   << std::setw(10) << truncate(contacts[i].getLastName()) << "|"
                   << std::setw(10) << truncate(contacts[i].getNickName()) << std::endl;
-        std:: cout << std::setw(10)   << "----"
-        << std:: setw(10) << " ----"
-        << std:: setw(10) << "----"
-        << std:: setw(10) << "----" << std:: endl;
     }
 	std::string input = searchIndex();
     if (input.empty()) return;
