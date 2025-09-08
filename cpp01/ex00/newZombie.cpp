@@ -2,6 +2,11 @@
 
 
 Zombie* newZombie( std::string name )
-{
-    return new Zombie(name);
+{ 
+    Zombie *temp = new (std::nothrow) Zombie(name);
+    if (!temp) {
+        std::cerr << "Memory allocation failed" << std::endl;
+        return NULL;
+    }
+    return temp;
 }

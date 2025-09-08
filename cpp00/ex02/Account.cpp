@@ -18,7 +18,8 @@ Account::Account (int initial_deposit)
     _accountIndex = _nbAccounts - 1;
     _nbDeposits = 0;
     _nbWithdrawals = 0;
-    std::cout << "[19920104_091532] index:" << _accountIndex
+    _displayTimestamp();
+    std::cout << "index:" << _accountIndex
               << ";amount:" << _amount
               << ";created" << std::endl;
 }
