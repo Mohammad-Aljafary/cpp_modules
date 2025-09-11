@@ -13,13 +13,13 @@ class PhoneBook {
 	private:
 	Contact contacts[MAX_CONTACTS];
 	int numOfContact;
+	std::string truncate(const std::string& str);
+	std:: string readInput(std:: string str, int alpha);
+	std::string searchIndex();
 
     public:
         std::string addContact();
         void searchContact();
-        std::string truncate(const std::string& str);
-        std:: string readInput(std:: string str, int alpha);
-        std::string searchIndex();
 		void setNumOfContact(int n);
 };
 

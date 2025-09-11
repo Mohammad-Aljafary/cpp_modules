@@ -31,7 +31,7 @@ std:: string PhoneBook::readInput(std::string str, int alpha)
     if (!std::getline(std:: cin, input))
     {
 		std::cout << std::endl;
-		return "EXIT";
+		return "EXIT1";
 	}
     if (input.empty())
     {

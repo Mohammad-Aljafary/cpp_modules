@@ -10,10 +10,6 @@ void PhoneBook::searchContact() {
               << std::setw(10) << "First Name" << "|"
               << std::setw(10) << "Last Name" << "|"
               << std::setw(10) << "Nickname" << std::endl;
-    std:: cout << std::setw(10)   << "----"
-                << std:: setw(10) << " ----"
-                << std:: setw(10) << "----"
-                << std:: setw(10) << "----" << std:: endl;
 
     for (int i = 0; i < numOfContact; i++) {
         std::cout << std::setw(10) << i + 1 << "|"
@@ -40,9 +36,11 @@ std::string PhoneBook::addContact() {
 
     std::string firstName = readInput("First Name", 1);
     if (firstName.empty()) return "";
-	else if (firstName == "EXIT") return "EXIT";
+	else if (firstName == "EXIT1") return "EXIT1";
+
     std::string lastName = readInput("Last Name", 1);
     if (lastName.empty()) return "";
+	else if (lastName == "EXIT1") return "EXIT1";
 
     std::string nickName = readInput("Nickname", 1);
     if (nickName.empty()) return "";
@@ -50,14 +48,18 @@ std::string PhoneBook::addContact() {
 
     std:: string phoneNumber  = readInput("Phone number", 0);
     if (phoneNumber.empty()) return "";
-	else if (phoneNumber == "EXIT") return "EXIT";
+	else if (phoneNumber == "EXIT1") return "EXIT1";
 
     std::cout << "Enter Darkest Secret: ";
     std::string secret;
-    std::getline(std::cin, secret);
+    if (!std::getline(std::cin, secret))
+	{
+		std::cout << std::endl;
+		return "EXIT1";
+	}
     if (secret.empty()) {
         std::cerr << "Can't have empty field" << std::endl;
-        return "EXIT";
+        return "EXIT1";
     }
 
     contacts[index].setFirstName(firstName);
@@ -86,7 +88,7 @@ int main() {
 			return 1;
 		}
         if (command == "ADD") {
-            if (phoneBook.addContact() == "EXIT") break;
+            if (phoneBook.addContact() == "EXIT1") break;
         } else if (command == "SEARCH") {
             phoneBook.searchContact();
         } else if (command == "EXIT") {
