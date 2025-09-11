@@ -23,4 +23,7 @@ class PhoneBook {
 		void setNumOfContact(int n);
 };
 
+int validNumber(std::string str);
+int validStr(std::string str);
+
 #endif
