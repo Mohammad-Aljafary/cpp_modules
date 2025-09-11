@@ -44,7 +44,7 @@ std::string PhoneBook::addContact() {
 
     std::string nickName = readInput("Nickname", 1);
     if (nickName.empty()) return "";
-	else if (nickName == "EXIT") return "EXIT";
+	else if (nickName == "EXIT1") return "EXIT1";
 
     std:: string phoneNumber  = readInput("Phone number", 0);
     if (phoneNumber.empty()) return "";
