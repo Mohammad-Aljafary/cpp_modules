@@ -2,25 +2,26 @@
 
 int main()
 {
-	try
-	{
-		Bureaucrat john("john", 1);
-		std::cout << john.getGrade() << std::endl;
-		john.incrementGrade();
+	Bureaucrat a("A", 74);
+	Bureaucrat b("B", 150);
+	Form f("Form1", 75, 50);
+
+	std::cout << a << std::endl;
+	std::cout << b << std::endl;
+	std::cout << f.getName() << ", form grade " << f.getGrade() << ", execution grade " << f.getGradeEx() << std::endl;
+	try {
+		b.decrementGrade();
+	} catch (std::exception& e) {
+		std::cout << e.what() << std::endl;
 	}
-	catch(std::exception& e)
-	{
-		std::cerr << "Exception: " << e.what() << std::endl;
+	try {
+		a.incrementGrade();
+	} catch (std::exception& e) {
+		std::cout << e.what() << std::endl;
 	}
-	try
-	{
-		Bureaucrat b2("Alice", 150);
-		std::cout << b2.getGrade() << std::endl;
-		b2.decrementGrade();
-	}
-	catch(std::exception& e)
-	{
-		std::cerr << "Exception: " << e.what() << std::endl;
-	}
+	b.signForm(f);
+	a.signForm(f);
+
+	return 0;
 
 }

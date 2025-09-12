@@ -5,14 +5,16 @@
 #include <iostream>
 #include "Bureaucrat.hpp"
 
+class Bureaucrat;
+
 class Form
 {
 	private:
 	const std::string name;
-	bool sign;
 	const int grade;
 	const int gradeEx;
-
+	bool sign;
+	
 	public:
 	Form();
 	Form(std::string name, int grade, int gradeEx);
@@ -25,13 +27,12 @@ class Form
 
 	class GradeTooLowException : public std::exception {
 	public:
-    const char* what() const throw() {
-        return "Grade too low to sign the form";
-    }
+    const char* what() const throw();
+	};
+	class GradeTooHighException : public std::exception {
+	public:
+	const char* what() const throw();
+	};
 };
-
-
-};
-
 
 #endif
