@@ -1,6 +1,6 @@
 #include "Fixed.hpp"
 
-const int fraction = 8; 
+const int fraction = 8;
 
 Fixed::Fixed(): fixedPoint(0){
     std::cout << "Default constructor called" << std::endl;
@@ -19,7 +19,7 @@ Fixed& Fixed::operator=(const Fixed& obj) {
     return *this;
 }
 
-int Fixed::getRawBits( void ) const{
+int Fixed::getRawBits( void ) const {
     std::cout << "getRawBits member function called" << std::endl;
     return fixedPoint;
 }

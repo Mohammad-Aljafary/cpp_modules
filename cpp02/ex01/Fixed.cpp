@@ -29,7 +29,7 @@ Fixed& Fixed::operator=(const Fixed& obj) {
     return *this;
 }
 
-int Fixed::getRawBits( void ) const{
+int Fixed::getRawBits( void ) const {
     std::cout << "getRawBits member function called" << std::endl;
     return fixedPoint;
 }
@@ -43,11 +43,11 @@ Fixed::~Fixed(){
     std::cout << "Destructor called" <<std::endl;
 }
 
-float Fixed::toFloat( void ) const{
+float Fixed::toFloat( void ) const {
     return static_cast<float>(fixedPoint) / (1 << fraction);
 }
 
-int Fixed::toInt( void ) const{
+int Fixed::toInt( void ) const {
     return fixedPoint / (1 << fraction);
 }
 

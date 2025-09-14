@@ -22,11 +22,11 @@ Point& Point::operator=(const Point& other) {
 
 /**********get functions***************/
 
-Fixed Point::getX() const{
+Fixed Point::getX() const {
     return x;
 }
 
-Fixed Point::getY() const{
+Fixed Point::getY() const {
     return y;
 }
 
