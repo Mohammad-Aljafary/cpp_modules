@@ -6,7 +6,7 @@ HumanB::HumanB(std::string name) {
     this->weapon = NULL;
 }
 
-void HumanB::setType( Weapon* weapon) {
+void HumanB::setType( Weapon* const weapon) {
     this->weapon = weapon;
 }
 
