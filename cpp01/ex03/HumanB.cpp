@@ -16,3 +16,7 @@ void HumanB::attack() {
     else
         std::cout << name << " has no weapon to attack with!" << std::endl;
 }
+
+void HumanB::setWeapon( Weapon& weapon) {
+	this->weapon = &weapon;
+}
