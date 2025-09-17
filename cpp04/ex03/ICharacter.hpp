@@ -3,7 +3,9 @@
 #include <string>
 #include "AMateria.hpp"
 
-class ICharacter 
+class AMateria;
+
+class ICharacter
 {
     public:
     virtual ~ICharacter() {}
