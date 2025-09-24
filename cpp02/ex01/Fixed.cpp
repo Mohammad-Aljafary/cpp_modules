@@ -13,7 +13,7 @@ Fixed::Fixed(const Fixed& obj){
 
 Fixed::Fixed(const float fixed){
     std::cout << "Float constructor called" << std::endl;
-    fixedPoint = static_cast<int>(roundf(fixed * (1 << fraction)));
+    fixedPoint = roundf(fixed * (1 << fraction));
 }
 
 Fixed::Fixed(const int fixed){

@@ -1,6 +1,6 @@
 #include "Fixed.hpp"
 
-const int fraction = 8;
+const int Fixed::fraction = 8;
 
 Fixed::Fixed(): fixedPoint(0){
     std::cout << "Default constructor called" << std::endl;
