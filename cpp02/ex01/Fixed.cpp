@@ -44,7 +44,7 @@ Fixed::~Fixed(){
 }
 
 float Fixed::toFloat( void ) const {
-    return static_cast<float>(fixedPoint) / (1 << fraction);
+    return (fixedPoint) / (1.0f * (1 << fraction));
 }
 
 int Fixed::toInt( void ) const {

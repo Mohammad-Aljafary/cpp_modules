@@ -14,7 +14,7 @@ class Form
 	const int grade;
 	const int gradeEx;
 	bool sign;
-	
+
 	public:
 	Form();
 	Form(std::string name, int grade, int gradeEx);
@@ -25,13 +25,13 @@ class Form
 	int		getGradeEx();
 	void	beSigned(Bureaucrat& b);
 
-	class GradeTooLowException : public std::exception {
+	class GradeTooLowException : public std::exception{
 	public:
-    const char* what() const throw();
+		virtual const char* what() const throw();
 	};
 	class GradeTooHighException : public std::exception {
 	public:
-	const char* what() const throw();
+		virtual const char* what() const throw();
 	};
 };
 
