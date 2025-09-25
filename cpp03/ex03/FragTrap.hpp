@@ -5,9 +5,6 @@
 #include <string>
 
 class FragTrap : virtual public ClapTrap {
-    private:
-        unsigned int energyPoints;
-        unsigned int attackDamage;
 
     public:
         FragTrap();

@@ -5,8 +5,6 @@
 #include <string>
 
 class ScavTrap : virtual public ClapTrap {
-    private:
-        bool gateKeeperMode;
 
     public:
         ScavTrap();
