@@ -4,7 +4,8 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98
 SRC = main.cpp linkedListOp.cpp
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
-NAME = Sed
+NAME = file
+DEP = $(OBJ:%.o=%.d)
 
 all: $(NAME)
 
@@ -13,7 +14,7 @@ $(NAME): $(OBJ)
 
 $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)
@@ -24,3 +25,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+

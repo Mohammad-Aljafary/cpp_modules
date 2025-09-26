@@ -3,9 +3,9 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = main.cpp HumanB.cpp HumanA.cpp Weapon.cpp
 OBJDIR = obj
+DEP = $(OBJ:%.o=%.d)
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
-NAME = battle
-
+NAME = human
 all: $(NAME)
 
 $(NAME): $(OBJ)
@@ -13,7 +13,7 @@ $(NAME): $(OBJ)
 
 $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)
@@ -24,3 +24,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+-include $(DEP)

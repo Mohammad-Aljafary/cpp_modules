@@ -3,6 +3,7 @@ CXXFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = main.cpp DiamondTrap.cpp ScavTrap.cpp FragTrap.cpp ClapTrap.cpp
 OBJDIR = obj
+DEP = $(OBJ:%.o=%.d)
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 NAME = DiamondTrap
 
@@ -24,3 +25,5 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
+
+-include $(DEP)
