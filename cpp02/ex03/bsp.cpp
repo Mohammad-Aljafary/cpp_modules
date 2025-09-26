@@ -17,5 +17,8 @@ bool bsp( Point const a, Point const b, Point const c, Point const point){
     float A2 = area(a, point, c);
     float A3 = area(a, b, point);
 
+    if (A == 0 || A1 == 0 || A2 == 0 || A3 == 0)
+        return false;
+
     return (A == A1 + A2 + A3);
 }
