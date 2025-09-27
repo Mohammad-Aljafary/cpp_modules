@@ -1,18 +1,18 @@
 #include "ScavTrap.hpp"
 
-ScavTrap::ScavTrap() : ClapTrap() {
+ScavTrap::ScavTrap() : ClapTrap(){
     std::cout << "ScavTrap default constructor called" << std::endl;
-    this->setName("Default ScavTrap");
-    this->setHitPoints(100);
-    this->setEnergyPoints(50);
-    this->setAttackDamage(20);
+    name = "Default_ScavTrap";
+    hitPoints = 100;
+    energyPoints = 50;
+    attackDamage = 20;
 }
 
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name){
     std::cout << "ScavTrap parameterized constructor called" << std::endl;
-    this->setHitPoints(100);
-    this->setEnergyPoints(50);
-    this->setAttackDamage(20);
+    hitPoints = 100;
+    energyPoints = 50;
+    attackDamage = 20;
 }
 
 ScavTrap::ScavTrap(const ScavTrap& obj) : ClapTrap(obj){
@@ -20,7 +20,7 @@ ScavTrap::ScavTrap(const ScavTrap& obj) : ClapTrap(obj){
 }
 
 ScavTrap::~ScavTrap() {
-    std::cout << "ScavTrap " << getName() << " destroyed!" << std::endl;
+    std::cout << "ScavTrap " << name << " destroyed!" << std::endl;
 }
 
 ScavTrap& ScavTrap::operator=(const ScavTrap& obj) {
@@ -33,15 +33,15 @@ ScavTrap& ScavTrap::operator=(const ScavTrap& obj) {
 }
 
 void ScavTrap::attack(const std::string& target) {
-    if (this->getEnergyPoints() > 0 && this->getHitPoints() > 0) {
-        std::cout << "ScavTrap " << this->getName() << " attacks " << target 
-                  << ", causing " << this->getAttackDamage() << " points of damage!" << std::endl;
-        this->setEnergyPoints(this->getEnergyPoints() - 1);
+    if (energyPoints > 0 && hitPoints > 0) {
+        std::cout << "ScavTrap " << name << " attacks " << target 
+                  << ", causing " << attackDamage << " points of damage!" << std::endl;
+        energyPoints--;
     } else {
-        std::cout << "ScavTrap " << this->getName() << " cannot attack!" << std::endl;
+        std::cout << "ScavTrap " << name << " cannot attack!" << std::endl;
     }
 }
 
 void ScavTrap::guardGate() {
-    std::cout << "ScavTrap " << getName() << " is now in Gate Keeper mode!" << std::endl;
+    std::cout << "ScavTrap " << name << " is now in Gate Keeper mode!" << std::endl;
 }

@@ -1,20 +1,20 @@
-CXX = c++
-CXXFLAGS = -Wall -Werror -Wextra -std=c++98
+CC = c++
+CFLAGS = -Wall -Werror -Wextra -std=c++98
 
-SRC = main.cpp ClapTrap.cpp
+SRC = main.cpp ClapTrap.cpp 
 OBJDIR = obj
-DEP = $(OBJ:%.o=%.d)
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
+DEP = $(OBJ:%.o=%.d)
 NAME = ClapTrap
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(OBJDIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)

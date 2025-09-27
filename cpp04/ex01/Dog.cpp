@@ -27,7 +27,8 @@ Dog& Dog::operator=(const Dog& obj) {
         Animal::operator=(obj);
         name = obj.name;
         age = obj.age;
-        *brain = *obj.brain; // deep copy
+        delete brain;
+        brain = new Brain(*obj.brain);
     }
     return *this;
 }

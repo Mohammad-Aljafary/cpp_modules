@@ -2,17 +2,17 @@
 
 FragTrap::FragTrap() : ClapTrap() {
     std::cout << "FragTrap default constructor called" << std::endl;
-    this->setName("Default FragTrap");
-    this->setHitPoints(100);
-    this->setEnergyPoints(100);
-    this->setAttackDamage(30);
+    name = "Default_FragTrap";
+    hitPoints = 100;
+    energyPoints = 100;
+    attackDamage = 30;
 }
 
 FragTrap::FragTrap(std::string name) : ClapTrap(name) {
     std::cout << "FragTrap parameterized constructor called" << std::endl;
-    this->setHitPoints(100);
-    this->setEnergyPoints(100);
-    this->setAttackDamage(30);
+    hitPoints = 100;
+    energyPoints = 100;
+    attackDamage = 30;
 }
 
 FragTrap::FragTrap(const FragTrap& obj) : ClapTrap(obj) {
@@ -20,7 +20,7 @@ FragTrap::FragTrap(const FragTrap& obj) : ClapTrap(obj) {
 }
 
 FragTrap::~FragTrap() {
-    std::cout << "FragTrap " << getName() << " destroyed!" << std::endl;
+    std::cout << "FragTrap " << name << " destroyed!" << std::endl;
 }
 
 FragTrap& FragTrap::operator=(const FragTrap& obj) {
@@ -33,12 +33,12 @@ FragTrap& FragTrap::operator=(const FragTrap& obj) {
 }
 
 void FragTrap::attack(const std::string& target) {
-    if (this->getEnergyPoints() > 0 && this->getHitPoints() > 0) {
-        std::cout << "FragTrap " << this->getName() << " attacks " << target 
-                  << ", causing " << this->getAttackDamage() << " points of damage!" << std::endl;
-        this->setEnergyPoints(this->getEnergyPoints() - 1);
+    if (energyPoints > 0 && hitPoints > 0) {
+        std::cout << "FragTrap " << name << " attacks " << target 
+                  << ", causing " << attackDamage << " points of damage!" << std::endl;
+        energyPoints--;
     } else {
-        std::cout << "FragTrap " << this->getName() << " cannot attack!" << std::endl;
+        std::cout << "FragTrap " << name << " cannot attack!" << std::endl;
     }
 }
 
