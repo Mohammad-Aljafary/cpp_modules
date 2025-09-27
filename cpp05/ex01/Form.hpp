@@ -3,6 +3,7 @@
 
 #include <exception>
 #include <iostream>
+#include <string>
 #include "Bureaucrat.hpp"
 
 class Bureaucrat;
@@ -25,7 +26,7 @@ class Form
 	int		getGradeEx();
 	void	beSigned(Bureaucrat& b);
 
-	class GradeTooLowException : public std::exception{
+	class GradeTooLowException : public std::exception {
 	public:
 		virtual const char* what() const throw();
 	};

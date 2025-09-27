@@ -4,6 +4,8 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98
 SRC = Bureaucrat.cpp main.cpp Form.cpp
 OBJDIR = obj
 DEP = $(OBJ:%.o=%.d)
+OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
+NAME = form
 
 all: $(NAME)
 
@@ -24,3 +26,4 @@ re: fclean all
 
 .PHONY: all clean fclean re
 
+-include $(DEP)
