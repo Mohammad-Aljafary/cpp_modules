@@ -26,7 +26,7 @@ int main() {
 
         alice.signForm(form3); // This should fail
         bob.signForm(form3);
-        bob.executeForm(form3);
+        alice.executeForm(form3);
 
     } catch (const std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;

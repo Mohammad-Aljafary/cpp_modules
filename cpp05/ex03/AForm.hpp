@@ -19,7 +19,7 @@ class AForm
 	public:
 	AForm();
 	AForm(std::string name, int grade, int gradeEx);
-	~AForm();
+	virtual~AForm();
 	AForm& operator=(AForm& obj);
 	std::string	getName() const;
 	int		getGrade() const;
@@ -36,5 +36,7 @@ class AForm
 		virtual const char* what() const throw();
 	};
 };
+
+std::ostream& operator<<(std::ostream& os, const AForm& f);
 
 #endif
