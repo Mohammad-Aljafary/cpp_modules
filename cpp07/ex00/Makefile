@@ -1,11 +1,11 @@
 CXX = c++
 CXXFLAGS = -Wall -Werror -Wextra -std=c++98
 
-SRC = main.cpp C.cpp A.cpp B.cpp Base.cpp
+SRC = main.cpp
 OBJDIR = obj
 DEP = $(OBJ:%.o=%.d)
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
-NAME = Base
+NAME = Template
 
 all: $(NAME)
 
