@@ -1,20 +1,20 @@
-CC = c++
-CFLAGS = -Wall -Werror -Wextra -std=c++98
+CXX = c++
+CXXFLAGS = -Wall -Werror -Wextra -std=c++98
 
-SRC = Bureaucrat.cpp main.cpp AForm.cpp PresidentialPardonForm.cpp RobotomyRequestForm.cpp ShrubberyCreationForm.cpp
+SRC = main.cpp 
 OBJDIR = obj
 DEP = $(OBJ:%.o=%.d)
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
-NAME = AForm
+NAME = Base
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
 
 $(OBJDIR)/%.o: %.cpp
 	@mkdir -p $(OBJDIR)
-	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@
+	$(CXX) $(CXXFLAGS) -MMD -MP -c $< -o $@
 
 clean:
 	rm -rf $(OBJDIR)

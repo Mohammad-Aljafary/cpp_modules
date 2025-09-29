@@ -7,7 +7,7 @@ SRC= main.cpp Character.cpp AMateria.cpp Ice.cpp Cure.cpp MateriaSource.cpp
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 DEP = $(OBJ:%.o=%.d)
-NAME = materials
+NAME = materia
 
 all: $(NAME)
 

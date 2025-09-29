@@ -66,35 +66,3 @@ void ClapTrap::takeDamage(unsigned int amount) {
     }
 }
 
-
-const std::string& ClapTrap::getName() const {
-    return name;
-}
-
-int ClapTrap::getHitPoints() const {
-    return hitPoints;
-}
-
-int ClapTrap::getEnergyPoints() const {
-    return energyPoints;
-}
-
-int ClapTrap::getAttackDamage() const {
-    return attackDamage;
-}
-
-void ClapTrap::setName(const std::string& newName) {
-    name = newName;
-}
-
-void ClapTrap::setHitPoints(int points) {
-    hitPoints = points;
-}
-
-void ClapTrap::setEnergyPoints(int points) {
-    energyPoints = points;
-}
-
-void ClapTrap::setAttackDamage(int damage) {
-    attackDamage = damage;
-}

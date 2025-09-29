@@ -4,6 +4,8 @@ CFLAGS = -Wall -Werror -Wextra -std=c++98
 SRC = Bureaucrat.cpp main.cpp
 OBJDIR = obj
 DEP = $(OBJ:%.o=%.d)
+OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
+NAME = bureaucrat
 
 all: $(NAME)
 

@@ -2,16 +2,16 @@
 
 DiamondTrap::DiamondTrap() : FragTrap(), ScavTrap(), name("Default DiamondTrap") {
     std::cout << "DiamondTrap default constructor called" << std::endl;
-    this->setHitPoints(100);
-    this->setEnergyPoints(50);
-    this->setAttackDamage(30);
+    this->hitPoints = 100;
+    this->energyPoints = 50;
+    this->attackDamage = 30;
 }
 
 DiamondTrap::DiamondTrap(std::string name) : ClapTrap(name + "_clap_name"), FragTrap(name), ScavTrap(name), name(name) {
     std::cout << "DiamondTrap parameterized constructor called" << std::endl;
-    this->setHitPoints(100);
-    this->setEnergyPoints(50);
-    this->setAttackDamage(30);
+    this->hitPoints = 100;
+    this->energyPoints = 50;
+    this->attackDamage = 30;
 }
 
 DiamondTrap::DiamondTrap(const DiamondTrap& obj) :ClapTrap(obj.name + "_clap_name"), FragTrap(obj), ScavTrap(obj), name(obj.name) {
@@ -34,10 +34,10 @@ DiamondTrap& DiamondTrap::operator=(const DiamondTrap& obj) {
 }
 
 void DiamondTrap::attack(const std::string& target) {
-    if (this->getEnergyPoints() > 0 && this->getHitPoints() > 0) {
+    if (this->energyPoints > 0 && this->hitPoints > 0) {
         std::cout << "DiamondTrap " << this->name << " attacks " << target 
-                  << ", causing " << this->getAttackDamage() << " points of damage!" << std::endl;
-        this->setEnergyPoints(this->getEnergyPoints() - 1);
+                  << ", causing " << this->attackDamage << " points of damage!" << std::endl;
+        this->energyPoints--;
     } else {
         std::cout << "DiamondTrap " << this->name << " cannot attack!" << std::endl;
     }
@@ -45,6 +45,5 @@ void DiamondTrap::attack(const std::string& target) {
 
 void DiamondTrap::whoAmI() const {
     std::cout << "I am " << this->name 
-              << " and my ClapTrap name is " << ClapTrap::getName() << std::endl;
+              << " and my ClapTrap name is " << ClapTrap::name << std::endl;
 }
-
