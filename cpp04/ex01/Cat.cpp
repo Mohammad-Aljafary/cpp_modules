@@ -1,40 +1,32 @@
 #include "Cat.hpp"
 #include "Brain.hpp"
 
-Cat::Cat() : brain(new Brain()), age(0) {
+Cat::Cat() : brain(new Brain()){
     type = "Cat";
-    std::cout << "Cat created\n";
-}
-
-Cat::Cat(std::string name, int age) 
-    : name(name), brain(new Brain()), age(age) {
-    type = "Cat";
-    std::cout << "Cat created with name and age\n";
+    std::cout << "Cat created" << std::endl;
 }
 
 Cat::Cat(const Cat& obj) 
-    : Animal(obj), name(obj.name), brain(new Brain(*obj.brain)), age(obj.age) {
-    std::cout << "Cat copied\n";
+    : Animal(obj), brain(new Brain(*obj.brain)){
+    std::cout << "Cat copied" << std::endl;
 }
 
 Cat::~Cat() {
     delete brain;
-    std::cout << "Cat destroyed\n";
+    std::cout << "Cat destroyed" << std::endl;
 }
 
 Cat& Cat::operator=(const Cat& obj) {
     if (this != &obj) {
         Animal::operator=(obj);
-        name = obj.name;
-        age = obj.age;
         delete brain;
-        brain = new Brain(*obj.brain); // deep copy
+        brain = new Brain(*obj.brain);
     }
     return *this;
 }
 
 void Cat::makeSound() const {
-    std::cout << "Meow!\n";
+    std::cout << "Meow!" << std::endl;
 }
 
 const std::string& Cat::getType() const {

@@ -10,7 +10,7 @@ class Animal {
 
     public:
         Animal();
-        Animal(std::string name, int age);
+        Animal(std::string type);
         Animal(const Animal& obj);
         virtual ~Animal();
         Animal& operator=(const Animal& obj);

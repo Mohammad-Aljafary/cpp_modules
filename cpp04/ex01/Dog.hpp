@@ -7,13 +7,10 @@ class Brain;
 
 class Dog : public Animal {
     private:
-        std::string name;
         Brain* brain;
-        int age;
 
     public:
         Dog();
-        Dog(std::string name, int age);
         Dog(const Dog& obj);
         ~Dog();
         Dog& operator=(const Dog& obj);

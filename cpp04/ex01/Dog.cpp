@@ -1,32 +1,25 @@
 #include "Dog.hpp"
 
 
-Dog::Dog() : name(""), brain(new Brain()), age(0) {
+Dog::Dog() : brain(new Brain()) {
     type = "Dog";
-    std::cout << "Dog created\n";
+    std::cout << "Dog created"<< std::endl;
 }
 
-Dog::Dog(std::string name, int age)
-: name(name), brain(new Brain()), age(age) {
-type = "Dog";
-std::cout << "Dog created with name and age\n";
-}
 
-Dog::Dog(const Dog& obj)
-: Animal(obj), name(obj.name), brain(new Brain(*obj.brain)), age(obj.age) {
-std::cout << "Dog copied\n";
+Dog::Dog(const Dog& obj): Animal(obj), brain(new Brain(*obj.brain)) {
+    std::cout << "Dog copied"<< std::endl;
 }
 
 Dog::~Dog() {
     delete brain;
-    std::cout << "Dog destroyed\n";
+    std::cout << "Dog destroyed"<< std::endl;
 }
 
 Dog& Dog::operator=(const Dog& obj) {
     if (this != &obj) {
         Animal::operator=(obj);
-        name = obj.name;
-        age = obj.age;
+
         delete brain;
         brain = new Brain(*obj.brain);
     }
@@ -34,7 +27,7 @@ Dog& Dog::operator=(const Dog& obj) {
 }
 
 void Dog::makeSound() const {
-    std::cout << "Woof!\n";
+    std::cout << "Woof!" << std::endl;
 }
 
 const std::string& Dog::getType() const {

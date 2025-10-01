@@ -8,6 +8,8 @@ private:
     std::string name;
     AMateria* inventory[4];
     int inventoryCount;
+    AMateria* unequipped[100];
+    int unequippedCount;
 
 public:
     Character();

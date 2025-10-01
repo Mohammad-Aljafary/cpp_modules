@@ -2,8 +2,14 @@
 
 int main() {
     // Create a Dog and a Cat
-    Dog dog("Buddy", 3);
-    Cat cat("Whiskers", 2);
+    Dog *dog2 = new Dog();
+    Dog *dog3 = new Dog();
+    dog2->setBrainIdea(0, "I want to play!");
+    *dog3 = *dog2;
+    std::cout << dog3->getBrainIdea(0) << std::endl;
+
+    Dog dog;
+    Cat cat;
 
     // Set some ideas in their brains
     dog.setBrainIdea(0, "Chase the ball");
@@ -18,6 +24,7 @@ int main() {
 
     std::cout << "Cat's idea 0: " << cat.getBrainIdea(0) << std::endl;
     std::cout << "Cat's idea 1: " << cat.getBrainIdea(1) << std::endl;
-
+    delete dog2;
+    delete dog3;
     return 0;
 }

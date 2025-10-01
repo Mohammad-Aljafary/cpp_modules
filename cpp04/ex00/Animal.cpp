@@ -4,8 +4,8 @@ Animal::Animal() : type("Unknown") {
     std::cout << "Animal default constructor called" << std::endl;
 }
 
-Animal::Animal(std::string type, int age) : type(type) {
-    std::cout << "Animal parameterized constructor called for " << type << " aged " << age << std::endl;
+Animal::Animal(std::string type) : type(type) {
+    std::cout << "Animal parameterized constructor called for " << type << std::endl;
 }
 
 Animal::Animal(const Animal& obj) : type(obj.type) {
