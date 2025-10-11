@@ -25,7 +25,9 @@ void RPN::evaluate(const std::string& expression) {
             int b = stk.top(); stk.pop();
             int a = stk.top(); stk.pop();
             int result;
-
+            std::cout << a << std::endl;
+            std::cout << b << std::endl;
+            
             if (token == "+") result = a + b;
             else if (token == "-") result = a - b;
             else if (token == "*") result = a * b;
@@ -35,6 +37,7 @@ void RPN::evaluate(const std::string& expression) {
                 }
                 result = a / b;
             }
+            std::cout << "Result of " << a << " " << token << " " << b << " = " << result << std::endl;
             stk.push(result);
         } else {
             try {

@@ -2,7 +2,12 @@
 
 Bureaucrat::Bureaucrat(){}
 
-Bureaucrat::Bureaucrat(std::string name, int grade): name(name), grade(grade){
+Bureaucrat::Bureaucrat(std::string name, int grade): name(name){
+	if (grade < 1)
+		throw GradeTooHighException();
+	else if (grade > 150)
+		throw GradeTooLowException();
+	this->grade = grade;
 
 }
 
