@@ -7,7 +7,9 @@ ShrubberyCreationForm::ShrubberyCreationForm(std::string target): AForm("Shrubbe
 
 ShrubberyCreationForm::~ShrubberyCreationForm(){}
 
-ShrubberyCreationForm& ShrubberyCreationForm::operator=(ShrubberyCreationForm& obj)
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& obj): AForm(obj), target(obj.target) {}
+
+ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm& obj)
 {
     if (this != &obj)
     {
@@ -16,8 +18,9 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=(ShrubberyCreationForm& o
     return *this;
 }
 
-
 void ShrubberyCreationForm::execute(Bureaucrat const & executor) const {
+    if (!this->getSign())
+        throw std::runtime_error("Form is not signed");
     if (executor.getGrade() > this->getGradeEx())
         throw AForm::GradeTooLowException();
     std::ofstream ofs((this->target + "_shrubbery").c_str());

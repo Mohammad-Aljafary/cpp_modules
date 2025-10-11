@@ -4,10 +4,15 @@ Intern::Intern(){}
 
 Intern::~Intern(){}
 
-Intern& Intern::operator=(Intern& obj)
+Intern& Intern::operator=(const Intern& obj)
 {
     (void)obj;
     return *this;
+}
+
+Intern::Intern(const Intern& obj)
+{
+    (void)obj;
 }
 
 AForm* Intern::makeForm(std::string formName, std::string target)

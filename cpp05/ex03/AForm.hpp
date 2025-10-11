@@ -19,11 +19,13 @@ class AForm
 	public:
 	AForm();
 	AForm(std::string name, int grade, int gradeEx);
+	AForm(const AForm& obj);
 	virtual~AForm();
-	AForm& operator=(AForm& obj);
+	AForm& operator=(const AForm& obj);
 	std::string	getName() const;
 	int		getGrade() const;
 	int		getGradeEx() const;
+	bool		getSign() const;
 	void	beSigned(Bureaucrat& b);
 	virtual void	execute(Bureaucrat const & executor) const = 0;
 

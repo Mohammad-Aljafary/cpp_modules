@@ -6,7 +6,9 @@ RobotomyRequestForm::RobotomyRequestForm(std::string target): AForm("RobotomyReq
 
 RobotomyRequestForm::~RobotomyRequestForm(){}
 
-RobotomyRequestForm& RobotomyRequestForm::operator=(RobotomyRequestForm& obj)
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& obj): AForm(obj), target(obj.target) {}
+
+RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& obj)
 {
     if (this != &obj)
     {
@@ -16,6 +18,8 @@ RobotomyRequestForm& RobotomyRequestForm::operator=(RobotomyRequestForm& obj)
 }
 
 void RobotomyRequestForm::execute(Bureaucrat const & executor) const {
+    if (!this->getSign())
+        throw std::runtime_error("Form is not signed");
     if (executor.getGrade() > this->getGradeEx())
         throw AForm::GradeTooLowException();
     srand(time(NULL));

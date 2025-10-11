@@ -19,11 +19,13 @@ class Form
 	public:
 	Form();
 	Form(std::string name, int grade, int gradeEx);
+	Form(const Form& obj);
 	~Form();
-	Form& operator=(Form& obj);
-	std::string	getName();
-	int		getGrade();
-	int		getGradeEx();
+	Form& operator=(const Form& obj);
+	std::string	getName() const;
+	int		getGrade() const;
+	bool		getSign() const;
+	int		getGradeEx() const;
 	void	beSigned(Bureaucrat& b);
 
 	class GradeTooLowException : public std::exception {
@@ -35,5 +37,7 @@ class Form
 		virtual const char* what() const throw();
 	};
 };
+
+std::ostream& operator<<(std::ostream& os, const Form& f);
 
 #endif
