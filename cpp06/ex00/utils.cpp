@@ -107,8 +107,8 @@ void convertedFloat (const std::string& literal) {
         std::cout << "float: impossible" << std::endl;
         return;
     }
-
-    std::cout << "float: " << num << "f" << std::endl;
+    float fnum = static_cast<float>(num);
+    std::cout << "float: " << fnum << "f" << std::endl;
 }
 
 /*
@@ -149,5 +149,6 @@ void convertedDouble (const std::string& literal) {
         std::cout << "double: impossible" << std::endl;
         return;
     }
-    std::cout << "double: " << num << std::endl;
+    double dnum = static_cast<double>(num);
+    std::cout << "double: " << dnum << std::endl;
 }

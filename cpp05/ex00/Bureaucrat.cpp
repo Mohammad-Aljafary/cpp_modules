@@ -10,6 +10,7 @@ Bureaucrat::Bureaucrat(std::string name, int grade): name(name) {
 	this->grade = grade;
 }
 
+
 Bureaucrat::Bureaucrat(const Bureaucrat& obj): name(obj.getName()), grade(obj.getGrade()) {
 }
 
