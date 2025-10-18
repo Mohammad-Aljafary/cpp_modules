@@ -49,7 +49,8 @@ const char* AForm::GradeTooHighException::what() const throw(){
 }
 
 void AForm::beSigned(Bureaucrat& b){
-
+	if(this->sign)
+		throw std::runtime_error("Form is already signed");
 	if (b.getGrade() > this->grade)
 		throw GradeTooLowException();
 	this->sign = 1;
