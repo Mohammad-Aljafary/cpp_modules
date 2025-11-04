@@ -43,7 +43,7 @@ void identify(Base& p)
         std::cout << "A identified" << std::endl;
         return;
     }
-    catch (std::bad_cast&) {}
+    catch (...) {}
 
     try
     {
@@ -52,7 +52,7 @@ void identify(Base& p)
         std::cout << "B identified" << std::endl;
         return;
     }
-    catch (std::bad_cast&) {}
+    catch (...) {}
 
     try
     {
@@ -61,7 +61,7 @@ void identify(Base& p)
         std::cout << "C identified" << std::endl;
         return;
     }
-    catch (std::bad_cast&) {}
+    catch (...) {}
 
     std::cout << "Unknown type" << std::endl;
 }

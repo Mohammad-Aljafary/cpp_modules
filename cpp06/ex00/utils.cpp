@@ -76,7 +76,7 @@ void convertedInt (const std::string& literal) {
 void convertedFloat (const std::string& literal) {
     std::string str = literal;
 
-    if (str == "nan" || str == "inf" || str == "-inf")
+    if (str == "nan" || str == "+inf" || str == "inf"||  str == "-inf" || str == "nanf" || str == "inff" || str == "-inff")
     {
         std::cout << "float: " << str << "f" << std::endl;
         return;
@@ -92,6 +92,7 @@ void convertedFloat (const std::string& literal) {
     {
         if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
         {
+
             std::cout << "float: impossible" << std::endl;
             return;
         }
@@ -103,12 +104,17 @@ void convertedFloat (const std::string& literal) {
         std::cout << "float: impossible" << std::endl;
         return;
     }
-    if (num < std::numeric_limits<float>::min() || num > std::numeric_limits<float>::max()) {
+    if (num < -std::numeric_limits<float>::max() || num > std::numeric_limits<float>::max()) {
+        std::cout << "float: here" << std::endl;
+        std::cout << "float: " << num << std::endl;
         std::cout << "float: impossible" << std::endl;
         return;
     }
     float fnum = static_cast<float>(num);
-    std::cout << "float: " << fnum << "f" << std::endl;
+    if (fnum == static_cast<int>(fnum))
+        std::cout << "float: " << std::fixed << std::setprecision(1) << fnum << "f" << std::endl;
+    else
+        std::cout << "float: " << fnum << "f" << std::endl;
 }
 
 /*
@@ -118,7 +124,7 @@ void convertedFloat (const std::string& literal) {
 void convertedDouble (const std::string& literal) {
     std::string str = literal;
 
-    if (str == "nan" || str == "inf" || str == "-inf")
+    if (str == "nan" || str == "+inf" || str == "inf"||  str == "-inf" || str == "nanf" || str == "inff" || str == "-inff")
     {
         std::cout << "double: " << str << std::endl;
         return;
@@ -145,10 +151,13 @@ void convertedDouble (const std::string& literal) {
         std::cout << "double: impossible" << std::endl;
         return;
     }
-    if (num < std::numeric_limits<double>::min() || num > std::numeric_limits<double>::max()) {
+    if (num < -std::numeric_limits<double>::max() || num > std::numeric_limits<double>::max()) {
         std::cout << "double: impossible" << std::endl;
         return;
     }
     double dnum = static_cast<double>(num);
-    std::cout << "double: " << dnum << std::endl;
+    if (dnum == static_cast<int>(dnum))
+        std::cout << "double: " << std::fixed << std::setprecision(1) << dnum << std::endl;
+    else
+        std::cout << "double: " << dnum << std::endl;
 }
