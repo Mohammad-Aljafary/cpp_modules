@@ -44,16 +44,25 @@ void  convertedChar(const std::string& literal) {
 */
 void convertedInt (const std::string& literal) {
     std::string str = literal;
+
+
+    str.find('f') != std::string::npos ? str.erase(str.find('f')) : str;
+
+    str.find('.') == std::string::npos ? str.append(".0") : str;
+
     while (str[0] == ' ' || (str[0] >= 9 && str[0] <= 13))
         str.erase(0, 1);
     int i = 0;
     if (str[i] == '-' || str[i] == '+')
         i++;
-    while (str[i] >= '0' && str[i] <= '9')
+    while (str[i])
+    {
+        if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
+        {
+            std::cout << "int: impossible" << std::endl;
+            return;
+        }
         i++;
-    if (str[i] != '\0' && str[i] != '.' && str[i] != 'f') {
-        std::cout << "int: impossible" << std::endl;
-        return;
     }
     std::stringstream ss(literal);
     double value;
@@ -92,7 +101,6 @@ void convertedFloat (const std::string& literal) {
     {
         if ((str[i] < '0' || str[i] > '9') && str[i] != '.')
         {
-
             std::cout << "float: impossible" << std::endl;
             return;
         }
