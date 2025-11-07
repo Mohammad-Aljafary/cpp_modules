@@ -7,12 +7,14 @@
 #include <sstream>
 
 class ScalarConverter {
-    
-    public:
-        static void convert(const std::string& literal);
+
+    private:
         ScalarConverter();
         ScalarConverter(const ScalarConverter&);
         ScalarConverter& operator=(const ScalarConverter&);
+        
+    public:
+        static void convert(const std::string& literal);
         ~ScalarConverter();
 };
 
