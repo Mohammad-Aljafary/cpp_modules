@@ -85,9 +85,14 @@ void convertedInt (const std::string& literal) {
 void convertedFloat (const std::string& literal) {
     std::string str = literal;
 
-    if (str == "nan" || str == "+inf" || str == "inf"||  str == "-inf" || str == "nanf" || str == "inff" || str == "-inff")
+    if (str == "nan" || str == "+inf" || str == "inf"||  str == "-inf")
     {
         std::cout << "float: " << str << "f" << std::endl;
+        return;
+    }
+    else if (str == "nanf" || str == "inff" || str == "-inff" || str == "+inff")
+    {
+        std::cout << "float: " << str << std::endl;
         return;
     }
 
@@ -132,12 +137,17 @@ void convertedFloat (const std::string& literal) {
 void convertedDouble (const std::string& literal) {
     std::string str = literal;
 
-    if (str == "nan" || str == "+inf" || str == "inf"||  str == "-inf" || str == "nanf" || str == "inff" || str == "-inff")
+    if (str == "nanf" || str == "inff" || str == "-inff" || str == "+inff")
+    {
+        str.erase(str.length() - 1);
+        std::cout << "double: " << str << std::endl;
+        return;
+    }
+    else if (str == "nan" || str == "+inf" || str == "inf"||  str == "-inf")
     {
         std::cout << "double: " << str << std::endl;
         return;
     }
-
     str.find('f') != std::string::npos ? str.erase(str.find('f')) : str;
 
     str.find('.') == std::string::npos ? str.append(".0") : str;
