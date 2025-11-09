@@ -10,6 +10,6 @@ void print(char &c) {
 
 int main() {
     char arr[] = {'a', 'b', 'c', 'd', 'e'};
-    iter(arr, 5, print);
+    iter(arr, 5, static_cast<void(*)(char&)>(print));
     return 0;
 }
