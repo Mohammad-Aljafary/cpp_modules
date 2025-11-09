@@ -16,6 +16,15 @@ Span &Span::operator=(const Span &other) {
 
 Span::~Span() {}
 
+void Span::addNumbers(std::vector<int>::iterator begin, std::vector<int>::iterator end) {
+    for (std::vector<int>::iterator it = begin; it != end; ++it) {
+        if (_numbers.size() >= _N) {
+            throw std::runtime_error("Cannot add more numbers, capacity reached");
+        }
+        _numbers.push_back(*it);
+    }
+}
+
 void Span::addNumber(int number) {
     if (_numbers.size() >= _N) {
         throw std::runtime_error("Cannot add more numbers, capacity reached");

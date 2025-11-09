@@ -9,6 +9,7 @@ template <typename T>
 class MutantStack : public std::stack<T> {
     public:
         typedef typename std::stack<T>::container_type::iterator iterator;
+        typedef typename std::stack<T>::container_type::reverse_iterator reverse_iterator;
 
         iterator begin() {
             return std::stack<T>::c.begin();
@@ -18,11 +19,11 @@ class MutantStack : public std::stack<T> {
             return std::stack<T>::c.end();
         }
 
-        iterator rbegin() {
+        reverse_iterator rbegin() {
             return std::stack<T>::c.rbegin();
         }
 
-        iterator rend() {
+        reverse_iterator rend() {
             return std::stack<T>::c.rend();
         }
 
@@ -34,11 +35,11 @@ class MutantStack : public std::stack<T> {
             return std::stack<T>::c.end();
         }
 
-        iterator const rbegin() const {
+        reverse_iterator const rbegin() const {
             return std::stack<T>::c.rbegin();
         }
 
-        iterator const rend() const {
+        reverse_iterator const rend() const {
             return std::stack<T>::c.rend();
         }
 
