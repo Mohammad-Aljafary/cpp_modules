@@ -16,7 +16,9 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
 
 void PmergeMe::fillContainers(char** input, int size) {
     for (int i = 0; i < size; ++i) {
-        int num = std::atoi(input[i]);
+        std::stringstream ss(input[i]);
+        int num;
+        ss >> num;
         if (num < 0) {
             throw std::invalid_argument("Negative numbers are not allowed.");
         }
