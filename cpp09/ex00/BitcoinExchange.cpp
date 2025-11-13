@@ -28,7 +28,11 @@ void BitcoinExchange::loadData(const std::string& filename)
         float value;
 
         if (std::getline(ss, date, ',') && ss >> value) {
+            check_date_format(date);
             data[date] = value;
+        }
+        else {
+            throw std::runtime_error("Invalid data format in line: " + line);
         }
     }
     file.close();
