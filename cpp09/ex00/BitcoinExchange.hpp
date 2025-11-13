@@ -10,7 +10,8 @@
 class BitcoinExchange {
    private:
     std::map<std::string, float> data;
-
+    void check_date_format(const std::string& date) const;
+    float getValue(const std::string& date) const;
    public:
     BitcoinExchange();
     ~BitcoinExchange();
@@ -19,5 +20,4 @@ class BitcoinExchange {
 
     void loadData(const std::string& filename);
     void processInput(const std::string& filename) const;
-    float getValue(const std::string& date) const;
 };
