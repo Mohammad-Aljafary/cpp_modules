@@ -16,7 +16,7 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
 }
 
 void PmergeMe::fillContainers(char** input, int size) {
-    for (int i = 1; i < size; ++i) {  // Start from 1 to skip program name
+    for (int i = 1; i < size; ++i) {
         std::stringstream ss(input[i]);
         int num;
         if (!(ss >> num) || !ss.eof()) {
@@ -30,22 +30,42 @@ void PmergeMe::fillContainers(char** input, int size) {
     }
 }
 
-// Binary search insertion
-template<typename Container>
-static typename Container::iterator binarySearchInsert(Container& , int value, 
-                                                       typename Container::iterator begin,
-                                                       typename Container::iterator end) {
-    typename Container::iterator left = begin;
-    typename Container::iterator right = end;
+// Generate Jacobsthal sequence for optimal insertion order
+std::vector<size_t> PmergeMe::generateJacobsthalSequence(size_t n) {
+    std::vector<size_t> jacobsthal;
+    if (n == 0) return jacobsthal;
     
-    while (left != right) {
-        typename Container::iterator mid = left;
-        typename Container::difference_type distance = std::distance(left, right);
-        std::advance(mid, distance / 2);
-        
-        if (*mid < value) {
-            left = mid;
-            ++left;
+    // Generate Jacobsthal numbers: J(0)=0, J(1)=1, J(n)=J(n-1)+2*J(n-2)
+    jacobsthal.push_back(0);
+    if (n == 1) return jacobsthal;
+    
+    jacobsthal.push_back(1);
+    
+    size_t j_prev2 = 0;
+    size_t j_prev1 = 1;
+    
+    while (true) {
+        size_t j_next = j_prev1 + 2 * j_prev2;
+        if (j_next >= n) break;
+        jacobsthal.push_back(j_next);
+        j_prev2 = j_prev1;
+        j_prev1 = j_next;
+    }
+    
+    return jacobsthal;
+}
+
+// Binary search with comparison count optimization
+size_t PmergeMe::binarySearchVec(const std::vector<int>& sorted, int value, size_t end) {
+    if (end == 0) return 0;
+    
+    size_t left = 0;
+    size_t right = end;
+    
+    while (left < right) {
+        size_t mid = left + (right - left) / 2;
+        if (sorted[mid] < value) {
+            left = mid + 1;
         } else {
             right = mid;
         }
@@ -53,78 +73,37 @@ static typename Container::iterator binarySearchInsert(Container& , int value,
     return left;
 }
 
-void PmergeMe::insertionSortVec(std::vector<int>& v, int left, int right) {
-    for (int i = left + 1; i <= right; ++i) {
-        int key = v[i];
-        int j = i - 1;
-        while (j >= left && v[j] > key) {
-            v[j + 1] = v[j];
-            --j;
-        }
-        v[j + 1] = key;
-    }
-}
-
-void PmergeMe::insertionSortDeq(std::deque<int>& d, int left, int right) {
-    for (int i = left + 1; i <= right; ++i) {
-        int key = d[i];
-        int j = i - 1;
-        while (j >= left && d[j] > key) {
-            d[j + 1] = d[j];
-            --j;
-        }
-        d[j + 1] = key;
-    }
-}
-
-void PmergeMe::mergeVec(std::vector<int>& left, std::vector<int>& right, std::vector<int>& result) {
-    size_t i = 0, j = 0, k = 0;
-    while (i < left.size() && j < right.size()) {
-        if (left[i] <= right[j]) {
-            result[k++] = left[i++];
-        } else {
-            result[k++] = right[j++];
-        }
-    }
-    while (i < left.size()) {
-        result[k++] = left[i++];
-    }
-    while (j < right.size()) {
-        result[k++] = right[j++];
-    }
-}
-
-void PmergeMe::mergeDeq(std::deque<int>& left, std::deque<int>& right, std::deque<int>& result) {
-    size_t i = 0, j = 0, k = 0;
-    while (i < left.size() && j < right.size()) {
-        if (left[i] <= right[j]) {
-            result[k++] = left[i++];
-        } else {
-            result[k++] = right[j++];
-        }
-    }
-    while (i < left.size()) {
-        result[k++] = left[i++];
-    }
-    while (j < right.size()) {
-        result[k++] = right[j++];
-    }
-}
-
-void PmergeMe::mergeInsertSortVec(std::vector<int>& v) {
-    if (v.size() <= 1) {
-        return;
-    }
+size_t PmergeMe::binarySearchDeq(const std::deque<int>& sorted, int value, size_t end) {
+    if (end == 0) return 0;
     
-    // Step 1: Group elements into pairs and sort each pair
+    size_t left = 0;
+    size_t right = end;
+    
+    while (left < right) {
+        size_t mid = left + (right - left) / 2;
+        if (sorted[mid] < value) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return left;
+}
+
+void PmergeMe::fordJohnsonSortVec(std::vector<int>& v) {
+    size_t n = v.size();
+    if (n <= 1) return;
+    
+    // Step 1: Create pairs and compare each pair (n/2 comparisons)
     std::vector<std::pair<int, int> > pairs;
-    bool hasStraggler = (v.size() % 2 != 0);
-    int straggler = hasStraggler ? v.back() : 0;
+    bool hasStraggler = (n % 2 != 0);
+    int straggler = hasStraggler ? v[n - 1] : 0;
     
-    size_t pairCount = v.size() / 2;
+    size_t pairCount = n / 2;
     for (size_t i = 0; i < pairCount; ++i) {
-        int a = v[i * 2];
-        int b = v[i * 2 + 1];
+        int a = v[2 * i];
+        int b = v[2 * i + 1];
+        // One comparison per pair - store larger first, smaller second
         if (a > b) {
             pairs.push_back(std::make_pair(a, b));
         } else {
@@ -132,67 +111,101 @@ void PmergeMe::mergeInsertSortVec(std::vector<int>& v) {
         }
     }
     
-    // Step 2: Recursively sort the larger elements (first elements of pairs)
-    std::vector<int> larger;
+    if (pairs.empty()) {
+        return;
+    }
+    
+    // Step 2: Recursively sort the larger elements (main chain)
+    std::vector<int> mainChain;
+    std::vector<int> pending;
+    
     for (size_t i = 0; i < pairs.size(); ++i) {
-        larger.push_back(pairs[i].first);
+        mainChain.push_back(pairs[i].first);
+        pending.push_back(pairs[i].second);
     }
     
-    if (larger.size() > 1) {
-        mergeInsertSortVec(larger);
+    // Recursively sort the main chain
+    if (mainChain.size() > 1) {
+        fordJohnsonSortVec(mainChain);
     }
     
-    // Step 3: Build the result by inserting smaller elements using binary search
+    // Step 3: Insert pending elements using Jacobsthal insertion order
     std::vector<int> result;
     
-    // Insert all larger elements first
-    for (size_t i = 0; i < larger.size(); ++i) {
-        result.push_back(larger[i]);
+    // The smallest element from the first pair goes first
+    if (!pending.empty()) {
+        result.push_back(pending[0]);
     }
     
-    // Insert smaller elements using Ford-Johnson insertion order (Jacobsthal sequence)
-    std::vector<int> smaller;
-    for (size_t i = 0; i < pairs.size(); ++i) {
-        // Find the position of pairs[i].first in result
-        for (size_t j = 0; j < larger.size(); ++j) {
-            if (larger[j] == pairs[i].first) {
-                smaller.push_back(pairs[i].second);
-                break;
+    // Add all main chain elements
+    for (size_t i = 0; i < mainChain.size(); ++i) {
+        result.push_back(mainChain[i]);
+    }
+    
+    // Generate Jacobsthal sequence for insertion order
+    std::vector<size_t> jacobsthal = generateJacobsthalSequence(pending.size());
+    
+    // Create insertion order based on Jacobsthal sequence
+    std::vector<size_t> insertionOrder;
+    std::vector<bool> inserted(pending.size(), false);
+    
+    if (!pending.empty()) {
+        inserted[0] = true; // First element already inserted
+    }
+    
+    for (size_t i = 1; i < jacobsthal.size(); ++i) {
+        size_t pos = jacobsthal[i];
+        if (pos < pending.size() && !inserted[pos]) {
+            insertionOrder.push_back(pos);
+            inserted[pos] = true;
+        }
+        
+        // Insert elements between jacobsthal[i-1] and jacobsthal[i] in reverse
+        size_t prev = jacobsthal[i - 1];
+        for (size_t j = pos; j > prev; --j) {
+            if (j - 1 < pending.size() && !inserted[j - 1]) {
+                insertionOrder.push_back(j - 1);
+                inserted[j - 1] = true;
             }
         }
     }
     
-    // Insert smaller elements using binary search
-    for (size_t i = 0; i < smaller.size(); ++i) {
-        std::vector<int>::iterator pos = binarySearchInsert(result, smaller[i], 
-                                                             result.begin(), result.end());
-        result.insert(pos, smaller[i]);
+    // Insert remaining elements
+    for (size_t i = 0; i < pending.size(); ++i) {
+        if (!inserted[i]) {
+            insertionOrder.push_back(i);
+        }
+    }
+    
+    // Perform insertions using binary search
+    for (size_t i = 0; i < insertionOrder.size(); ++i) {
+        size_t idx = insertionOrder[i];
+        int value = pending[idx];
+        size_t pos = binarySearchVec(result, value, result.size());
+        result.insert(result.begin() + pos, value);
     }
     
     // Insert straggler if exists
     if (hasStraggler) {
-        std::vector<int>::iterator pos = binarySearchInsert(result, straggler,
-                                                             result.begin(), result.end());
-        result.insert(pos, straggler);
+        size_t pos = binarySearchVec(result, straggler, result.size());
+        result.insert(result.begin() + pos, straggler);
     }
     
     v = result;
 }
 
-void PmergeMe::mergeInsertSortDeq(std::deque<int>& d) {
-    if (d.size() <= 1) {
-        return;
-    }
+void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
+    size_t n = d.size();
+    if (n <= 1) return;
     
-    // Step 1: Group elements into pairs and sort each pair
     std::vector<std::pair<int, int> > pairs;
-    bool hasStraggler = (d.size() % 2 != 0);
-    int straggler = hasStraggler ? d.back() : 0;
+    bool hasStraggler = (n % 2 != 0);
+    int straggler = hasStraggler ? d[n - 1] : 0;
     
-    size_t pairCount = d.size() / 2;
+    size_t pairCount = n / 2;
     for (size_t i = 0; i < pairCount; ++i) {
-        int a = d[i * 2];
-        int b = d[i * 2 + 1];
+        int a = d[2 * i];
+        int b = d[2 * i + 1];
         if (a > b) {
             pairs.push_back(std::make_pair(a, b));
         } else {
@@ -200,44 +213,72 @@ void PmergeMe::mergeInsertSortDeq(std::deque<int>& d) {
         }
     }
     
-    // Step 2: Recursively sort the larger elements
-    std::deque<int> larger;
+    if (pairs.empty()) {
+        return;
+    }
+    
+    std::deque<int> mainChain;
+    std::vector<int> pending;
+    
     for (size_t i = 0; i < pairs.size(); ++i) {
-        larger.push_back(pairs[i].first);
+        mainChain.push_back(pairs[i].first);
+        pending.push_back(pairs[i].second);
     }
     
-    if (larger.size() > 1) {
-        mergeInsertSortDeq(larger);
+    if (mainChain.size() > 1) {
+        fordJohnsonSortDeq(mainChain);
     }
     
-    // Step 3: Build the result
     std::deque<int> result;
     
-    for (size_t i = 0; i < larger.size(); ++i) {
-        result.push_back(larger[i]);
+    if (!pending.empty()) {
+        result.push_back(pending[0]);
     }
     
-    // Insert smaller elements
-    std::vector<int> smaller;
-    for (size_t i = 0; i < pairs.size(); ++i) {
-        for (size_t j = 0; j < larger.size(); ++j) {
-            if (larger[j] == pairs[i].first) {
-                smaller.push_back(pairs[i].second);
-                break;
+    for (size_t i = 0; i < mainChain.size(); ++i) {
+        result.push_back(mainChain[i]);
+    }
+    
+    std::vector<size_t> jacobsthal = generateJacobsthalSequence(pending.size());
+    std::vector<size_t> insertionOrder;
+    std::vector<bool> inserted(pending.size(), false);
+    
+    if (!pending.empty()) {
+        inserted[0] = true;
+    }
+    
+    for (size_t i = 1; i < jacobsthal.size(); ++i) {
+        size_t pos = jacobsthal[i];
+        if (pos < pending.size() && !inserted[pos]) {
+            insertionOrder.push_back(pos);
+            inserted[pos] = true;
+        }
+        
+        size_t prev = jacobsthal[i - 1];
+        for (size_t j = pos; j > prev; --j) {
+            if (j - 1 < pending.size() && !inserted[j - 1]) {
+                insertionOrder.push_back(j - 1);
+                inserted[j - 1] = true;
             }
         }
     }
     
-    for (size_t i = 0; i < smaller.size(); ++i) {
-        std::deque<int>::iterator pos = binarySearchInsert(result, smaller[i],
-                                                            result.begin(), result.end());
-        result.insert(pos, smaller[i]);
+    for (size_t i = 0; i < pending.size(); ++i) {
+        if (!inserted[i]) {
+            insertionOrder.push_back(i);
+        }
+    }
+    
+    for (size_t i = 0; i < insertionOrder.size(); ++i) {
+        size_t idx = insertionOrder[i];
+        int value = pending[idx];
+        size_t pos = binarySearchDeq(result, value, result.size());
+        result.insert(result.begin() + pos, value);
     }
     
     if (hasStraggler) {
-        std::deque<int>::iterator pos = binarySearchInsert(result, straggler,
-                                                            result.begin(), result.end());
-        result.insert(pos, straggler);
+        size_t pos = binarySearchDeq(result, straggler, result.size());
+        result.insert(result.begin() + pos, straggler);
     }
     
     d = result;
@@ -251,14 +292,14 @@ void PmergeMe::sortAndDisplay() {
     std::cout << std::endl;
 
     clock_t startVec = clock();
-    mergeInsertSortVec(vec);
+    fordJohnsonSortVec(vec);
     clock_t endVec = clock();
-    double timeVec = double(endVec - startVec) / CLOCKS_PER_SEC * 1000000; // microseconds
+    double timeVec = double(endVec - startVec) / CLOCKS_PER_SEC * 1000000;
 
     clock_t startDeq = clock();
-    mergeInsertSortDeq(deq);
+    fordJohnsonSortDeq(deq);
     clock_t endDeq = clock();
-    double timeDeq = double(endDeq - startDeq) / CLOCKS_PER_SEC * 1000000; // microseconds
+    double timeDeq = double(endDeq - startDeq) / CLOCKS_PER_SEC * 1000000;
 
     std::cout << "After:  ";
     for (size_t i = 0; i < vec.size(); ++i) {
@@ -266,6 +307,8 @@ void PmergeMe::sortAndDisplay() {
     }
     std::cout << std::endl;
 
-    std::cout << "Time to process a range of " << vec.size() << " elements with std::vector : " << timeVec << " us" << std::endl;
-    std::cout << "Time to process a range of " << deq.size() << " elements with std::deque  : " << timeDeq << " us" << std::endl;
+    std::cout << "Time to process a range of " << vec.size() 
+              << " elements with std::vector : " << timeVec << " us" << std::endl;
+    std::cout << "Time to process a range of " << deq.size() 
+              << " elements with std::deque  : " << timeDeq << " us" << std::endl;
 }

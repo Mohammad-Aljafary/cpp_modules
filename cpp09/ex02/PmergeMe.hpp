@@ -5,18 +5,23 @@
 #include <deque>
 #include <ctime>
 #include <cstdlib>
+#include <algorithm>
 
 class PmergeMe {
     private:
         std::vector<int> vec;
         std::deque<int> deq;
 
-        void mergeInsertSortVec(std::vector<int>& v);
-        void mergeInsertSortDeq(std::deque<int>& d);
-        void mergeVec(std::vector<int>& left, std::vector<int>& right, std::vector<int>& result);
-        void mergeDeq(std::deque<int>& left, std::deque<int>& right, std::deque<int>& result);
-        void insertionSortVec(std::vector<int>& v, int left, int right);
-        void insertionSortDeq(std::deque<int>& d, int left, int right);
+        // Ford-Johnson specific helpers
+        std::vector<size_t> generateJacobsthalSequence(size_t n);
+        
+        // Vector implementation
+        void fordJohnsonSortVec(std::vector<int>& v);
+        size_t binarySearchVec(const std::vector<int>& sorted, int value, size_t end);
+        
+        // Deque implementation
+        void fordJohnsonSortDeq(std::deque<int>& d);
+        size_t binarySearchDeq(const std::deque<int>& sorted, int value, size_t end);
 
     public:
         PmergeMe();
