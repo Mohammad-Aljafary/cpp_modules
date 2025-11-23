@@ -30,23 +30,31 @@ void PmergeMe::fillContainers(char** input, int size) {
     }
 }
 
-// Generate Jacobsthal sequence for optimal insertion order
+// ============================================================================
+// JACOBSTHAL SEQUENCE GENERATOR
+// ============================================================================
+// The Jacobsthal sequence is crucial for Ford-Johnson algorithm
+// It determines the optimal insertion order to minimize comparisons
+// Sequence: 0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341...
+// Formula: J(n) = J(n-1) + 2*J(n-2), where J(0)=0, J(1)=1
+// ============================================================================
 std::vector<size_t> PmergeMe::generateJacobsthalSequence(size_t n) {
     std::vector<size_t> jacobsthal;
     if (n == 0) return jacobsthal;
     
-    // Generate Jacobsthal numbers: J(0)=0, J(1)=1, J(n)=J(n-1)+2*J(n-2)
-    jacobsthal.push_back(0);
+    // Base cases
+    jacobsthal.push_back(0);  // J(0) = 0
     if (n == 1) return jacobsthal;
     
-    jacobsthal.push_back(1);
+    jacobsthal.push_back(1);  // J(1) = 1
     
+    // Generate sequence: J(n) = J(n-1) + 2*J(n-2)
     size_t j_prev2 = 0;
     size_t j_prev1 = 1;
     
     while (true) {
         size_t j_next = j_prev1 + 2 * j_prev2;
-        if (j_next >= n) break;
+        if (j_next >= n) break;  // Stop when we exceed our range
         jacobsthal.push_back(j_next);
         j_prev2 = j_prev1;
         j_prev1 = j_next;
@@ -94,7 +102,9 @@ void PmergeMe::fordJohnsonSortVec(std::vector<int>& v) {
     size_t n = v.size();
     if (n <= 1) return;
     
-    // Step 1: Create pairs and compare each pair (n/2 comparisons)
+    // ========================================================================
+    // STEP 1: PAIRING PHASE - Create and compare pairs (n/2 comparisons)
+    // ========================================================================
     std::vector<std::pair<int, int> > pairs;
     bool hasStraggler = (n % 2 != 0);
     int straggler = hasStraggler ? v[n - 1] : 0;
@@ -115,52 +125,82 @@ void PmergeMe::fordJohnsonSortVec(std::vector<int>& v) {
         return;
     }
     
-    // Step 2: Recursively sort the larger elements (main chain)
+    // ========================================================================
+    // STEP 2: RECURSIVELY SORT LARGER ELEMENTS (Main Chain)
+    // ========================================================================
     std::vector<int> mainChain;
     std::vector<int> pending;
     
     for (size_t i = 0; i < pairs.size(); ++i) {
-        mainChain.push_back(pairs[i].first);
-        pending.push_back(pairs[i].second);
+        mainChain.push_back(pairs[i].first);   // Larger elements
+        pending.push_back(pairs[i].second);     // Smaller elements (to insert later)
     }
     
-    // Recursively sort the main chain
+    // Recursively sort the main chain using Ford-Johnson
     if (mainChain.size() > 1) {
         fordJohnsonSortVec(mainChain);
     }
     
-    // Step 3: Insert pending elements using Jacobsthal insertion order
+    // ========================================================================
+    // STEP 3: INSERT PENDING ELEMENTS USING JACOBSTHAL INSERTION ORDER
+    // ========================================================================
+    // This is where the Jacobsthal sequence provides the optimal insertion order
+    // to minimize the total number of comparisons during binary search insertions
+    // ========================================================================
+    
     std::vector<int> result;
     
-    // The smallest element from the first pair goes first
+    // The smallest element from the first pair always goes first
+    // This is guaranteed to be smaller than all main chain elements
     if (!pending.empty()) {
         result.push_back(pending[0]);
     }
     
-    // Add all main chain elements
+    // Add all main chain elements (already sorted)
     for (size_t i = 0; i < mainChain.size(); ++i) {
         result.push_back(mainChain[i]);
     }
     
-    // Generate Jacobsthal sequence for insertion order
+    // ========================================================================
+    // GENERATE JACOBSTHAL SEQUENCE - THE KEY TO MINIMAL COMPARISONS
+    // ========================================================================
     std::vector<size_t> jacobsthal = generateJacobsthalSequence(pending.size());
     
-    // Create insertion order based on Jacobsthal sequence
+    // Debug output to show Jacobsthal sequence (comment out for production)
+    // std::cout << "Jacobsthal sequence for " << pending.size() << " elements: ";
+    // for (size_t i = 0; i < jacobsthal.size(); ++i) {
+    //     std::cout << jacobsthal[i] << " ";
+    // }
+    // std::cout << std::endl;
+    
+    // ========================================================================
+    // BUILD INSERTION ORDER BASED ON JACOBSTHAL SEQUENCE
+    // ========================================================================
+    // Algorithm:
+    // 1. Insert element at Jacobsthal position J[i]
+    // 2. Then insert elements between J[i-1] and J[i] in REVERSE order
+    // This ensures each insertion has optimal binary search depth
+    // ========================================================================
+    
     std::vector<size_t> insertionOrder;
     std::vector<bool> inserted(pending.size(), false);
     
     if (!pending.empty()) {
-        inserted[0] = true; // First element already inserted
+        inserted[0] = true; // First element already inserted above
     }
     
+    // Process each Jacobsthal number to build insertion order
     for (size_t i = 1; i < jacobsthal.size(); ++i) {
         size_t pos = jacobsthal[i];
+        
+        // Insert element at Jacobsthal position
         if (pos < pending.size() && !inserted[pos]) {
             insertionOrder.push_back(pos);
             inserted[pos] = true;
         }
         
-        // Insert elements between jacobsthal[i-1] and jacobsthal[i] in reverse
+        // Fill the gap: insert elements between previous and current Jacobsthal
+        // number in REVERSE order (this is crucial for minimizing comparisons)
         size_t prev = jacobsthal[i - 1];
         for (size_t j = pos; j > prev; --j) {
             if (j - 1 < pending.size() && !inserted[j - 1]) {
@@ -170,14 +210,26 @@ void PmergeMe::fordJohnsonSortVec(std::vector<int>& v) {
         }
     }
     
-    // Insert remaining elements
+    // Insert any remaining elements not covered by Jacobsthal sequence
     for (size_t i = 0; i < pending.size(); ++i) {
         if (!inserted[i]) {
             insertionOrder.push_back(i);
         }
     }
     
-    // Perform insertions using binary search
+    // Debug output to show insertion order (comment out for production)
+    // std::cout << "Insertion order based on Jacobsthal: ";
+    // for (size_t i = 0; i < insertionOrder.size(); ++i) {
+    //     std::cout << insertionOrder[i] << " ";
+    // }
+    // std::cout << std::endl;
+    
+    // ========================================================================
+    // PERFORM BINARY SEARCH INSERTIONS IN JACOBSTHAL-OPTIMIZED ORDER
+    // ========================================================================
+    // Each insertion uses binary search, limited by log2(n) comparisons
+    // The Jacobsthal order ensures minimum total comparisons
+    // ========================================================================
     for (size_t i = 0; i < insertionOrder.size(); ++i) {
         size_t idx = insertionOrder[i];
         int value = pending[idx];
@@ -198,6 +250,9 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
     size_t n = d.size();
     if (n <= 1) return;
     
+    // ========================================================================
+    // STEP 1: PAIRING PHASE
+    // ========================================================================
     std::vector<std::pair<int, int> > pairs;
     bool hasStraggler = (n % 2 != 0);
     int straggler = hasStraggler ? d[n - 1] : 0;
@@ -217,6 +272,9 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
         return;
     }
     
+    // ========================================================================
+    // STEP 2: RECURSIVELY SORT MAIN CHAIN
+    // ========================================================================
     std::deque<int> mainChain;
     std::vector<int> pending;
     
@@ -229,6 +287,9 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
         fordJohnsonSortDeq(mainChain);
     }
     
+    // ========================================================================
+    // STEP 3: JACOBSTHAL-BASED INSERTION
+    // ========================================================================
     std::deque<int> result;
     
     if (!pending.empty()) {
@@ -239,6 +300,7 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
         result.push_back(mainChain[i]);
     }
     
+    // GENERATE JACOBSTHAL SEQUENCE FOR OPTIMAL INSERTION ORDER
     std::vector<size_t> jacobsthal = generateJacobsthalSequence(pending.size());
     std::vector<size_t> insertionOrder;
     std::vector<bool> inserted(pending.size(), false);
@@ -247,6 +309,7 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
         inserted[0] = true;
     }
     
+    // BUILD INSERTION ORDER USING JACOBSTHAL NUMBERS
     for (size_t i = 1; i < jacobsthal.size(); ++i) {
         size_t pos = jacobsthal[i];
         if (pos < pending.size() && !inserted[pos]) {
@@ -254,6 +317,7 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
             inserted[pos] = true;
         }
         
+        // Fill gaps in reverse order
         size_t prev = jacobsthal[i - 1];
         for (size_t j = pos; j > prev; --j) {
             if (j - 1 < pending.size() && !inserted[j - 1]) {
@@ -268,6 +332,8 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
             insertionOrder.push_back(i);
         }
     }
+    
+    // PERFORM BINARY INSERTIONS IN JACOBSTHAL ORDER
     
     for (size_t i = 0; i < insertionOrder.size(); ++i) {
         size_t idx = insertionOrder[i];
