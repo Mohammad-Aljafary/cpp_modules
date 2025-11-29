@@ -14,6 +14,15 @@ BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other) {
     return *this;
 }
 
+void check_value(float value)
+{
+    std::stringstream ss;
+    ss << value;
+    if (value < 0) {
+        throw std::runtime_error("Negative exchange rate: " + ss.str());
+    }
+}
+
 void BitcoinExchange::loadData(const std::string& filename)
 {
     std::ifstream file(filename.c_str());
@@ -22,17 +31,19 @@ void BitcoinExchange::loadData(const std::string& filename)
     }
 
     std::string line;
-    while (std::getline(file, line)) {
+    while (true) {
+        std::getline(file, line);
+        if (line.empty()) {
+            break;
+        }
         std::istringstream ss(line);
         std::string date;
         float value;
 
         if (std::getline(ss, date, ',') && ss >> value) {
             check_date_format(date);
+            check_value(value);
             data[date] = value;
-        }
-        else {
-            throw std::runtime_error("Invalid data format in line: " + line);
         }
     }
     file.close();
