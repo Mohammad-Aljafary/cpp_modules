@@ -150,13 +150,7 @@ void PmergeMe::fordJohnsonSortVec(std::vector<int>& v) {
     
     std::vector<int> result;
     
-    // The smallest element from the first pair always goes first
-    // This is guaranteed to be smaller than all main chain elements
-    if (!pending.empty()) {
-        result.push_back(pending[0]);
-    }
-    
-    // Add all main chain elements (already sorted)
+    // Start with all main chain elements (already sorted)
     for (size_t i = 0; i < mainChain.size(); ++i) {
         result.push_back(mainChain[i]);
     }
@@ -185,12 +179,8 @@ void PmergeMe::fordJohnsonSortVec(std::vector<int>& v) {
     std::vector<size_t> insertionOrder;
     std::vector<bool> inserted(pending.size(), false);
     
-    if (!pending.empty()) {
-        inserted[0] = true; // First element already inserted above
-    }
-    
     // Process each Jacobsthal number to build insertion order
-    for (size_t i = 1; i < jacobsthal.size(); ++i) {
+    for (size_t i = 0; i < jacobsthal.size(); ++i) {
         size_t pos = jacobsthal[i];
         
         // Insert element at Jacobsthal position
@@ -201,11 +191,13 @@ void PmergeMe::fordJohnsonSortVec(std::vector<int>& v) {
         
         // Fill the gap: insert elements between previous and current Jacobsthal
         // number in REVERSE order (this is crucial for minimizing comparisons)
-        size_t prev = jacobsthal[i - 1];
-        for (size_t j = pos; j > prev; --j) {
-            if (j - 1 < pending.size() && !inserted[j - 1]) {
-                insertionOrder.push_back(j - 1);
-                inserted[j - 1] = true;
+        if (i > 0) {
+            size_t prev = jacobsthal[i - 1];
+            for (size_t j = pos; j > prev; --j) {
+                if (j - 1 < pending.size() && !inserted[j - 1]) {
+                    insertionOrder.push_back(j - 1);
+                    inserted[j - 1] = true;
+                }
             }
         }
     }
@@ -292,10 +284,6 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
     // ========================================================================
     std::deque<int> result;
     
-    if (!pending.empty()) {
-        result.push_back(pending[0]);
-    }
-    
     for (size_t i = 0; i < mainChain.size(); ++i) {
         result.push_back(mainChain[i]);
     }
@@ -305,12 +293,8 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
     std::vector<size_t> insertionOrder;
     std::vector<bool> inserted(pending.size(), false);
     
-    if (!pending.empty()) {
-        inserted[0] = true;
-    }
-    
     // BUILD INSERTION ORDER USING JACOBSTHAL NUMBERS
-    for (size_t i = 1; i < jacobsthal.size(); ++i) {
+    for (size_t i = 0; i < jacobsthal.size(); ++i) {
         size_t pos = jacobsthal[i];
         if (pos < pending.size() && !inserted[pos]) {
             insertionOrder.push_back(pos);
@@ -318,11 +302,13 @@ void PmergeMe::fordJohnsonSortDeq(std::deque<int>& d) {
         }
         
         // Fill gaps in reverse order
-        size_t prev = jacobsthal[i - 1];
-        for (size_t j = pos; j > prev; --j) {
-            if (j - 1 < pending.size() && !inserted[j - 1]) {
-                insertionOrder.push_back(j - 1);
-                inserted[j - 1] = true;
+        if (i > 0) {
+            size_t prev = jacobsthal[i - 1];
+            for (size_t j = pos; j > prev; --j) {
+                if (j - 1 < pending.size() && !inserted[j - 1]) {
+                    insertionOrder.push_back(j - 1);
+                    inserted[j - 1] = true;
+                }
             }
         }
     }
