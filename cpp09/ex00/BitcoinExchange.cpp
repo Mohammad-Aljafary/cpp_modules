@@ -42,7 +42,7 @@ void BitcoinExchange::loadData(const std::string& filename)
 
         if (std::getline(ss, date, ',') && ss >> value) {
             check_date_format(date);
-            check_value(value);
+            ::check_value(value);
             data[date] = value;
         }
     }
@@ -66,9 +66,15 @@ void BitcoinExchange::check_date_format(const std::string& date) const
     if (date_copy.length() != 10 || date_copy[4] != '-' || date_copy[7] != '-') {
         throw std::runtime_error("Invalid date format: " + date);
     }
-    int year = std::atoi(date.substr(0, 4).c_str());
-    int month = std::atoi(date.substr(5, 2).c_str());
-    int day = std::atoi(date.substr(8, 2).c_str());
+    
+    int year, month, day;
+    std::stringstream ss_year(date_copy.substr(0, 4));
+    std::stringstream ss_month(date_copy.substr(5, 2));
+    std::stringstream ss_day(date_copy.substr(8, 2));
+    
+    ss_year >> year;
+    ss_month >> month;
+    ss_day >> day;
 
     if (month < 1 || month > 12 || day < 1 || day > 31) {
         throw std::runtime_error("Invalid date value: " + date);
@@ -80,6 +86,41 @@ void BitcoinExchange::check_date_format(const std::string& date) const
         bool isLeap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
         if (day > (isLeap ? 29 : 28)) {
             throw std::runtime_error("Invalid date value: " + date);
+        }
+    }
+}
+
+void BitcoinExchange::check_value (std::istringstream& ss) const
+{
+    std::string token = ss.str();
+
+    for (size_t i = 0; i <  token.length(); i++)
+    {
+        if (token[i] == '|')
+        {
+            token = token.substr(i + 1);
+            break ;
+        }
+    }
+    token.erase(0, token.find_first_not_of(" "));
+    token.erase(token.find_last_not_of(" ") + 1);
+    bool hasDigit = false;
+    bool hasDot = false;
+    for (size_t i = 0; i < token.length(); ++i) {
+        char c = token[i];
+        if (c == '-' || c == '+') {
+            if (i != 0) {
+                throw std::runtime_error("Invalid amount format");
+            }
+        } else if (c == '.') {
+            if (hasDot) {
+                throw std::runtime_error("Invalid amount format");
+            }
+            hasDot = true;
+        } else if (c >= '0' && c <= '9') {
+            hasDigit = true;
+        } else {
+            throw std::runtime_error("Invalid amount format");
         }
     }
 }
@@ -98,7 +139,8 @@ void BitcoinExchange::processInput(const std::string& filename) const
         float amount;
         if (std::getline(ss, date, '|') && ss >> amount) {
             try {
-
+                
+                check_value (ss);
                 check_date_format(date);
 
                 float rate = getValue(date);

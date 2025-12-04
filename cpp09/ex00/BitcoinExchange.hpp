@@ -12,6 +12,7 @@ class BitcoinExchange {
     std::map<std::string, float> data;
     void check_date_format(const std::string& date) const;
     float getValue(const std::string& date) const;
+    void check_value (std::istringstream& ss) const;
    public:
     BitcoinExchange();
     ~BitcoinExchange();
